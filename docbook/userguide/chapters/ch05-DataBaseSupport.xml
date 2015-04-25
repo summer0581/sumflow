@@ -1,0 +1,2003 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN'  
+               '../dtd/docbook.dtd'> 
+               
+<chapter>
+  <title>数据库说明</title>
+  
+  <section xml:id="dataBase.support">
+    <title>数据库支持</title>
+    <para>下面列表列出了FixFlow引擎所支持的经过测试的数据库</para>
+    <table xml:id="dataBase.support.table">
+      <title>数据库支持列表</title>
+      <tgroup cols='6'>
+        <colspec colnum="1" colname="c1" colwidth="1*"/>
+        <colspec colnum="2" colname="c2" colwidth="0.5*"/>
+        <colspec colnum="3" colname="c3" colwidth="3*"/>
+        <colspec colnum="4" colname="c4" colwidth="3*"/>
+        <colspec colnum="5" colname="c5" colwidth="2*"/>
+        <colspec colnum="6" colname="c6" colwidth="0.5*"/>
+        <thead>
+          <row>
+            <entry>数据库</entry>
+            <entry>版本</entry>
+            <entry>JDBC URL</entry>
+            <entry>驱动Jar</entry>
+            <entry>数据库方言</entry>
+            <entry>注释</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>mysql</entry>
+            <entry>5+</entry>
+            <entry >jdbc:mysql://127.0.0.1:3306/fixflow?characterEncoding=UTF-8</entry>
+            <entry>mysql-connector-java-5.1.17-bin.jar</entry>
+            <entry>MySqlPaginationImpl</entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>oracle</entry>
+            <entry>9i+</entry>
+            <entry>jdbc:oracle:thin:@127.0.0.1:1521:orcl</entry>
+            <entry>ojdbc5.jar</entry>
+            <entry>OraclePaginationImpl</entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>db2</entry>
+            <entry>9.5</entry>
+            <entry>jdbc:db2://localhost:5000/fixflow</entry>
+            <entry>db2jcc4.jar、db2jcc_license_cu.jar</entry>
+            <entry>DB2PaginationImpl</entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>sqlserver</entry>
+            <entry>2005+</entry>
+            <entry>jdbc:jtds:sqlserver://127.0.0.1:1433/fixflow</entry>
+            <entry>jtds-1.2.2.jar</entry>
+            <entry>SqlServerPaginationImpl</entry>
+            <entry></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  
+  
+  <section xml:id="dataBase.createTable">
+    <title>创建数据库表</title>
+    <para>获取数据库DDL脚本: DDL脚本位于GitHub上FixFlow资源中,DataBase项目为存放DDL脚本的项目。</para>
+    <itemizedlist>
+      <title>目录说明:</title>
+      <listitem>
+        <para>
+          <emphasis role="bold">create</emphasis>: 数据表创建脚本目录。
+          <itemizedlist>
+            <listitem>
+              <para>
+                <emphasis role="bold">fixflow.oracle.create.all.sql</emphasis>:   oracle数据库的创建脚本。
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis role="bold">fixflow.mysql.create.all.sql</emphasis>:   mysql数据库的创建脚本。
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis role="bold">fixflow.db2.create.all.sql</emphasis>:   db2数据库的创建脚本。
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis role="bold">fixflow.sqlserver.create.all.sql</emphasis>:   sqlserver数据库的创建脚本。
+              </para>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">drop</emphasis>: 数据表删除脚本目录。
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">upgrade</emphasis>: 数据表更新脚本目录,版本号位于FixFlowCongfig.xml。
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">datadictionary</emphasis>: 数据字典目录。 <link   linkend="dataBase.dataDictionary">数据字典</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">sqlhelp</emphasis>: 常用流程运维SQL语句目录。
+        </para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  
+  <section xml:id="dataBase.table">
+    <title>数据表介绍</title>
+    <para>
+      FIXFLOW_DEF、FIXFLOW_RUN、FIXFLOW_HIS、FIXFLOW_AGENT、FIXFLOW_MAIL、FIXFLOW_WORKDATE、QRZT_
+    </para>
+    
+    <table xml:id="dataBase.table.info.def">
+      <title>【FIXFLOW_DEF_*】【定义相关表】</title>
+      <tgroup cols='4'>
+        <colspec colnum="1" colname="c1" colwidth="4*"/>
+        <colspec colnum="2" colname="c2" colwidth="1*"/>
+        <colspec colnum="3" colname="c3" colwidth="4*"/>
+        <colspec colnum="4" colname="c4" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry>表名</entry>
+            <entry>类型</entry>
+            <entry>备注</entry>
+            <entry align="center">字段</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>FIXFLOW_DEF_DEPLOYMENT</entry>
+            <entry>定义表</entry>
+            <entry>流程资源部署主表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_DEF_BYTEARRAY</entry>
+            <entry>定义表</entry>
+            <entry>流程资源部署明细表,用来存放文件流。</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_DEF_PROCESSDEFINITION</entry>
+            <entry>定义表</entry>
+            <entry>流程定义表,流程定义文件存放在BTYEARRAY表里。</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    
+    
+    <table xml:id="dataBase.table.info.run">
+      <title>【FIXFLOW_RUN_*】【运行相关表】</title>
+      <tgroup cols='4'>
+        <colspec colnum="1" colname="c1" colwidth="4*"/>
+        <colspec colnum="2" colname="c2" colwidth="1*"/>
+        <colspec colnum="3" colname="c3" colwidth="4*"/>
+        <colspec colnum="4" colname="c4" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry>表名</entry>
+            <entry>类型</entry>
+            <entry>备注</entry>
+            <entry align="center">字段</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>FIXFLOW_RUN_PROCESSINSTANCE</entry>
+            <entry>运行表</entry>
+            <entry>流程实例表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_RUN_TOKEN</entry>
+            <entry>运行表</entry>
+            <entry>令牌表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_RUN_TASKINSTANCE</entry>
+            <entry>运行表</entry>
+            <entry>任务数据表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_RUN_TASKIDENTITYLINK</entry>
+            <entry>运行表</entry>
+            <entry>共享任务人员表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_RUN_VARIABLE</entry>
+            <entry>运行表</entry>
+            <entry>流程变量表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    
+    
+    <table xml:id="dataBase.table.info.his">
+      <title>【FIXFLOW_HIS_*】【实例相关表】</title>
+      <tgroup cols='4'>
+        <colspec colnum="1" colname="c1" colwidth="4*"/>
+        <colspec colnum="2" colname="c2" colwidth="1*"/>
+        <colspec colnum="3" colname="c3" colwidth="4*"/>
+        <colspec colnum="4" colname="c4" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry>表名</entry>
+            <entry>类型</entry>
+            <entry>备注</entry>
+            <entry align="center">字段</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>FIXFLOW_RUN_PROCESSINSTANCE</entry>
+            <entry>运行表</entry>
+            <entry>流程历史实例表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_RUN_TOKEN</entry>
+            <entry>运行表</entry>
+            <entry>令牌历史表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_RUN_TASKINSTANCE</entry>
+            <entry>运行表</entry>
+            <entry>任务数据历史表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_RUN_TASKIDENTITYLINK</entry>
+            <entry>运行表</entry>
+            <entry>共享任务人员历史表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_RUN_VARIABLE</entry>
+            <entry>运行表</entry>
+            <entry>流程变量历史表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    
+    
+    <table xml:id="dataBase.table.info.agent">
+      <title>【FIXFLOW_AGENT_*】【委托授权相关表】</title>
+      <tgroup cols='4'>
+        <colspec colnum="1" colname="c1" colwidth="4*"/>
+        <colspec colnum="2" colname="c2" colwidth="1*"/>
+        <colspec colnum="3" colname="c3" colwidth="4*"/>
+        <colspec colnum="4" colname="c4" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry>表名</entry>
+            <entry>类型</entry>
+            <entry>备注</entry>
+            <entry align="center">字段</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>FIXFLOW_AGENT_AGENTINFO</entry>
+            <entry>委托授权表</entry>
+            <entry>委托授权主信息表,一个用户只会有一条对应自己数据。</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_AGENT_AGENTDETAILS</entry>
+            <entry>委托授权表</entry>
+            <entry>委托授权明细信息表</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    
+    <table xml:id="dataBase.table.info.mail">
+      <title>【FIXFLOW_MAIL】【邮件表】</title>
+      <tgroup cols='4'>
+        <colspec colnum="1" colname="c1" colwidth="4*"/>
+        <colspec colnum="2" colname="c2" colwidth="1*"/>
+        <colspec colnum="3" colname="c3" colwidth="4*"/>
+        <colspec colnum="4" colname="c4" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry>表名</entry>
+            <entry>类型</entry>
+            <entry>备注</entry>
+            <entry align="center">字段</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>FIXFLOW_MAIL</entry>
+            <entry>邮件表</entry>
+            <entry>邮件信息表,用来存放从流程中发送的邮件记录。</entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    
+    
+    <table xml:id="dataBase.table.info.quartz">
+      <title>【QRZT_*】【定时任务相关表】<link xlink:href="http://quartz-scheduler.org/documentation">详细信息请参阅Quartz官方网站</link></title>
+      <tgroup cols='4'>
+        <colspec colnum="1" colname="c1" colwidth="4*"/>
+        <colspec colnum="2" colname="c2" colwidth="1*"/>
+        <colspec colnum="3" colname="c3" colwidth="4*"/>
+        <colspec colnum="4" colname="c4" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry>表名</entry>
+            <entry>类型</entry>
+            <entry>备注</entry>
+            <entry align="center">字段</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>    
+            <entry>QRTZ_BLOB_TRIGGERS</entry>
+            <entry>定时任务</entry>
+            <entry>Trigger 作为 Blob 类型存储 </entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry>QRTZ_CALENDARS</entry>
+            <entry>定时任务</entry>
+            <entry>以 Blob 类型存储 Quartz 的 Calendar 信息</entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry>QRTZ_CRON_TRIGGERS</entry>
+            <entry>定时任务</entry>
+            <entry>存储 Cron Trigger，包括 Cron表达式和时区信息 </entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry>QRTZ_FIRED_TRIGGERS</entry>
+            <entry>定时任务</entry>
+            <entry>存储与已触发的 Trigger 相关的状态信息,以及相联 Job的执行信息。  </entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry>QRTZ_JOB_DETAILS</entry>
+            <entry>定时任务</entry>
+            <entry>存储每一个已配置的 Job 的详细信息 </entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry>QRTZ_LOCKS</entry>
+            <entry>定时任务</entry>
+            <entry>存储程序的悲观锁的信息</entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry>QRTZ_PAUSED_TRIGGER_GRPS</entry>
+            <entry>定时任务</entry>
+            <entry>存储已暂停的 Trigger 组的信息</entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry>QRTZ_SCHEDULER_STATE</entry>
+            <entry>定时任务</entry>
+            <entry>存储少量的有关Scheduler的状态信息，和别的Scheduler实例。 </entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry>QRTZ_SIMPLE_TRIGGERS</entry>
+            <entry>定时任务</entry>
+            <entry>存储简单的Trigger,包括重复次数,间隔,以及已触的次数。 </entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry>QRTZ_SIMPROP_TRIGGERS</entry>
+            <entry>定时任务</entry>
+            <entry></entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+          <row>
+            <entry> QRTZ_TRIGGERS</entry>
+            <entry>定时任务</entry>
+            <entry>存储已配置的 Trigger 的信息</entry>
+            <entry align="center"><link xlink:href="http://quartz-scheduler.org/documentation">查看</link></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <table xml:id="dataBase.table.info.workDate">
+      <title>【FIXFLOW_WORKDATE_*】【工作日历表】</title>
+      <tgroup cols='4'>
+        <colspec colnum="1" colname="c1" colwidth="4*"/>
+        <colspec colnum="2" colname="c2" colwidth="1*"/>
+        <colspec colnum="3" colname="c3" colwidth="4*"/>
+        <colspec colnum="4" colname="c4" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry>表名</entry>
+            <entry>类型</entry>
+            <entry>备注</entry>
+            <entry align="center">字段</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>FIXFLOW_WORKDATE_DES</entry>
+            <entry>工作日历</entry>
+            <entry></entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_WORKDATE_DETAIL</entry>
+            <entry>工作日历</entry>
+            <entry></entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_WORKDATE_RULE</entry>
+            <entry>工作日历</entry>
+            <entry></entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_WORKDATE_SPEC</entry>
+            <entry>工作日历</entry>
+            <entry></entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+          <row>
+            <entry>FIXFLOW_WORKDATE_WEEKNUM</entry>
+            <entry>工作日历</entry>
+            <entry></entry>
+            <entry align="center"><link linkend="dataBase.dataDictionary">查看</link></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    
+    
+  </section>
+  
+  <section xml:id="dataBase.extension">
+    <title>扩展数据库</title>
+    <para>要支持新的数据库,需要实现数据库方言接口,并在fixflowconfig.xml文件中添加一行新的数据源。<link linkend="config.dataBaseConfig">数据源配置</link></para>
+    <para>数据库方言实现类位于:fixflow-expand/src/com/founder/fix/fixflow/expand/database/pagination</para>
+    <para>数据库方言接口:</para>
+    <programlisting language="java">   <![CDATA[
+  /**
+   * 数据库方言接口
+   * @author kenshin
+   *
+   */
+  public interface Pagination {
+  
+  /**
+   * 获取分页的Sql语句
+   * @param sql 数据结果集SQl语句
+   * @param firstResult 开始行
+   * @param maxResults 结束行
+   * @param fields 需要显示的字段
+   * @param orderBy 分页排序
+   * @return
+   */
+  String getPaginationSql(String sql, int firstResult, int maxResults,String fields,String orderBy);
+  
+  /**
+   * 获取判断空的数据库方言
+   * @param value 判断为空的值
+   * @return
+   */
+  String getIsNullLocalismSql(String sql);
+  
+  /**
+   * 获取时间类型方言
+   * @param date
+   * @return
+   */
+  String getDateSql();
+  
+  /**
+   * 获取当前时间类型方言
+   * @return
+   */
+  String getCurrentDateSql();
+  
+  /**
+   * 获取转换类型
+   * @param sql
+   * @param type
+   * @return
+   */
+  String getCastConvertSql(String sql, String type);
+
+  /**
+   * 获取方言数据库语句 
+   * @param localismKey 方言的Key
+   * @param localismValue 方言带入的值
+   * @return
+   */
+  String getLocalismSql(String localismKey,String localismValue);
+
+}
+]]>    </programlisting>
+  </section>
+  
+  <section xml:id="dataBase.dataDictionary">
+    <title>数据字典</title>
+    <section xml:id="dataBase.dataDictionary.core">
+      <title>引擎核心表</title>
+      <para>
+        <table xml:id="dataBase.dataDictionary.fixflow.agent.agentdetails">
+          <title>【FIXFLOW_AGENT_AGENTDETAILS】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>AGENT_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>代理人编号</entry>
+              </row>
+              <row>
+                <entry>PROCESS_ID</entry>
+                <entry>VARCHAR2(256)</entry>
+                <entry>流程唯一编号</entry>
+              </row>
+              <row>
+                <entry>PROCESS_NAME</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>流程名称</entry>
+              </row>
+              <row>
+                <entry>NODE_ID</entry>
+                <entry>VARCHAR2(1024)</entry>
+                <entry>节点编号</entry>
+              </row>
+              <row>
+                <entry>NODE_NAME</entry>
+                <entry>VARCHAR2(1024)</entry>
+                <entry>节点名称</entry>
+              </row>
+              <row>
+                <entry>AUSER</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>授权用户编号</entry>
+              </row>
+              <row>
+                <entry>AUSERNAME</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>授权用户名称</entry>
+              </row>
+              <row>
+                <entry>GUID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>唯一编号</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.agent.agent">
+          <title>【FIXFLOW_AGENT_AGENTINFO】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>AGENT_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>代理人编号</entry>
+              </row>
+              <row>
+                <entry>ODATE</entry>
+                <entry>DATE</entry>
+                <entry>操作时间</entry>
+              </row>
+              <row>
+                <entry>OPERATOR</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>操作人</entry>
+              </row>
+              <row>
+                <entry>SDATE</entry>
+                <entry>DATE</entry>
+                <entry>开始时间</entry>
+              </row>
+              <row>
+                <entry>EDATE</entry>
+                <entry>DATE</entry>
+                <entry>结束时间</entry>
+              </row>
+              <row>
+                <entry>VIEW_TYPE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>显示类型</entry>
+              </row>
+              <row>
+                <entry>STATUS</entry>
+                <entry>VARCHAR2(20)</entry>
+                <entry>状态</entry>
+              </row>
+              <row>
+                <entry>RESERVER1</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>预留1</entry>
+              </row>
+              <row>
+                <entry>RESERVER2</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>预留2</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.def.bytearray">
+          <title>【 FIXFLOW_DEF_BYTEARRAY】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>资源编号</entry>
+              </row>
+              <row>
+                <entry>REV</entry>
+                <entry>NUMBER(12,0)</entry>
+                <entry>版本号</entry>
+              </row>
+              <row>
+                <entry>NAME</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>资源名称</entry>
+              </row>
+              <row>
+                <entry>BYTES</entry>
+                <entry>BLOB</entry>
+                <entry>文件流</entry>
+              </row>
+              <row>
+                <entry>DEPLOYMENT_ID</entry>
+                <entry>VARCHAR2(256)</entry>
+                <entry>发布编号</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.def.deployment">
+          <title>【 FIXFLOW_DEF_DEPLOYMENT】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>发布编号</entry>
+              </row>
+              <row>
+                <entry>NAME</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>发布名称</entry>
+              </row>
+              <row>
+                <entry>DEPLOY_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>发布时间</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.def.processdefinition">
+          <title>【FIXFLOW_DEF_PROCESSDEFINITION】【流程定义信息表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>DIFINITIONS_KEY</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>DIFINITIONSID:VERSION:自增长ID组成</entry>
+              </row>
+              <row>
+                <entry>DIFINITIONS_ID</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>流程文件DEFINITIONS元素的ID属性值</entry>
+              </row>
+              <row>
+                <entry>PROCESS_KEY</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>PROCESSID:VERSION:自增长ID组成</entry>
+              </row>
+              <row>
+                <entry>PROCESS_ID</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>流程文件PROCESS元素的ID属性值</entry>
+              </row>
+              <row>
+                <entry>CATEGORY</entry>
+                <entry>VARCHAR2(255)</entry>
+                <entry>该编号就是流程文件TARGETNAMESPACE的属性值</entry>
+              </row>
+              <row>
+                <entry>PROCESS_NAME</entry>
+                <entry>VARCHAR2(255)</entry>
+                <entry>流程文件PROCESS元素的NAME属性值</entry>
+              </row>
+              <row>
+                <entry>VERSION</entry>
+                <entry>NUMBER(38,0)</entry>
+                <entry>流程版本号 发布时加1</entry>
+              </row>
+              <row>
+                <entry>RESOURCE_NAME</entry>
+                <entry>VARCHAR2(4000)</entry>
+                <entry>资源文件名称 一个XML文件名</entry>
+              </row>
+              <row>
+                <entry>DEPLOYMENT_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>发布编号GUID</entry>
+              </row>
+              <row>
+                <entry>DIAGRAM_RESOURCE_NAME</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>START_FORM_KEY</entry>
+                <entry>VARCHAR2(1024)</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>RESOURCE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>资源编号</entry>
+              </row>
+              <row>
+                <entry>SUB_TASK_ID</entry>
+                <entry>VARCHAR2(128)</entry>
+                <entry>提交节点编号</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.run.processinstance">
+          <title>【FIXFLOW_RUN_PROCESSINSTANCE、FIXFLOW_HIS_PROCESSINSTANCE】【流程定义信息表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>PROCESSINSTANCE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>流程实例编号</entry>
+              </row>
+              <row>
+                <entry>PROCESSDEFINITION_ID</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>流程定义唯一编号</entry>
+              </row>
+              <row>
+                <entry>SUBJECT</entry>
+                <entry>VARCHAR2(4000)</entry>
+                <entry>流程实例主题</entry>
+              </row>
+              <row>
+                <entry>START_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>开始时间</entry>
+              </row>
+              <row>
+                <entry>END_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>结束时间</entry>
+              </row>
+              <row>
+                <entry>DEFINITION_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>业务定义编号</entry>
+              </row>
+              <row>
+                <entry>ROOTTOKEN_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>根令牌编号</entry>
+              </row>
+              <row>
+                <entry>BIZ_KEY</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>业务数据主键值</entry>
+              </row>
+              <row>
+                <entry>INITIATOR</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>提交人</entry>
+              </row>
+              <row>
+                <entry>ISSUSPENDED</entry>
+                <entry>VARCHAR2(20)</entry>
+                <entry>是否暂停</entry>
+              </row>
+              <row>
+                <entry>PROCESSDEFINITION_KEY</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>流程定义ID</entry>
+              </row>
+              <row>
+                <entry>PARENT_INSTANCE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>父流程实例唯一编号</entry>
+              </row>
+              <row>
+                <entry>PARENT_INSTANCE_TOKEN_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>父流程令牌编号</entry>
+              </row>
+              <row>
+                <entry>UPDATE_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>更新时间</entry>
+              </row>
+              <row>
+                <entry>START_AUTHOR</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>启动流程的人</entry>
+              </row>
+              <row>
+                <entry>PROCESSLOCATION</entry>
+                <entry>VARCHAR2(2048)</entry>
+                <entry>流程位置</entry>
+              </row>
+              <row>
+                <entry>ISPIGEONHOLE</entry>
+                <entry>VARCHAR2(1)</entry>
+                <entry>是否归档（0-未归档、1-已归档，默认0）</entry>
+              </row>
+              <row>
+                <entry>INSTANCE_STATUS</entry>
+                <entry>VARCHAR2(45)</entry>
+                <entry>流程状态（RUNNING-运行中、COMPLETE-正常完成，TERMINATION-终止）</entry>
+              </row>
+              <row>
+                <entry>ARCHIVE_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>归档时间</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.run.taskindentitylink">
+          <title>【FIXFLOW_RUN_TASKIDENTITYLINK、FIXFLOW_HIS_TASKIDENTITYLINK】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>唯一编号</entry>
+              </row>
+              <row>
+                <entry>TYPE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>分配类型</entry>
+              </row>
+              <row>
+                <entry>USER_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>用户编号</entry>
+              </row>
+              <row>
+                <entry>GROUP_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>组编号</entry>
+              </row>
+              <row>
+                <entry>GROUP_TYPE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>组的类型 (1.部门 2.角色 3.职务......)</entry>
+              </row>
+              <row>
+                <entry>TASKINSTANCE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>关联任务编号</entry>
+              </row>
+              <row>
+                <entry>INCLUDE_EXCLUSION</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>ARCHIVE_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>归档时间</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.run.taskinstance">
+          <title>【FIXFLOW_RUN_TASKINSTANCE、FIXFLOW_HIS_TASKINSTANCE】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>TASKINSTANCE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>任务实例编号</entry>
+              </row>
+              <row>
+                <entry>PROCESSINSTANCE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>流程实例编号</entry>
+              </row>
+              <row>
+                <entry>PROCESSDEFINITION_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>流程定义编号</entry>
+              </row>
+              <row>
+                <entry>VERSION</entry>
+                <entry>NUMBER(38,0)</entry>
+                <entry>流程定义版本号</entry>
+              </row>
+              <row>
+                <entry>TOKEN_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>令牌编号</entry>
+              </row>
+              <row>
+                <entry>NODE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>节点编号</entry>
+              </row>
+              <row>
+                <entry>DESCRIPTION</entry>
+                <entry>VARCHAR2(4000)</entry>
+                <entry>任务主题</entry>
+              </row>
+              <row>
+                <entry>PARENTTASK_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>父任务编号，不为空说明是会签（多实例）任务</entry>
+              </row>
+              <row>
+                <entry>ASSIGNEE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>任务代理人</entry>
+              </row>
+              <row>
+                <entry>CLAIM_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>领取时间</entry>
+              </row>
+              <row>
+                <entry>NAME</entry>
+                <entry>VARCHAR2(255)</entry>
+                <entry>任务名称  FLOWNODE的NAME属性</entry>
+              </row>
+              <row>
+                <entry>CREATE_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>任务到达（创建）时间</entry>
+              </row>
+              <row>
+                <entry>START_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>开始时间</entry>
+              </row>
+              <row>
+                <entry>NODE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>节点编号</entry>
+              </row>
+              <row>
+                <entry>ISBLOCKING</entry>
+                <entry>VARCHAR2(20)</entry>
+                <entry>是否阻塞</entry>
+              </row>
+              <row>
+                <entry>END_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>结束时间</entry>
+              </row>
+              <row>
+                <entry>DUEDATE</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>处理期限</entry>
+              </row>
+              <row>
+                <entry>PRIORITY</entry>
+                <entry>NUMBER(6,0)</entry>
+                <entry>优先级别</entry>
+              </row>
+              <row>
+                <entry>CATEGORY</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>任务分类(最终用户决定分类的意义)</entry>
+              </row>
+              <row>
+                <entry>OWNER</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>任务所有者</entry>
+              </row>
+              <row>
+                <entry>DELEGATIONSTATESTRING</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>任务代理状态</entry>
+              </row>
+              <row>
+                <entry>BIZKEY</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>业务关联键值</entry>
+              </row>
+              <row>
+                <entry>COMMAND_TYPE</entry>
+                <entry>VARCHAR2(256)</entry>
+                <entry>处理命令类型</entry>
+              </row>
+              <row>
+                <entry>COMMAND_MESSAGE</entry>
+                <entry>VARCHAR2(256)</entry>
+                <entry>处理命令内容</entry>
+              </row>
+              <row>
+                <entry>TASK_COMMENT</entry>
+                <entry>VARCHAR2(4000)</entry>
+                <entry>任务意见</entry>
+              </row>
+              <row>
+                <entry>NODE_NAME</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>节点名称</entry>
+              </row>
+              <row>
+                <entry>PROCESSDEFINITION_KEY</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>流程定义Key</entry>
+              </row>
+              <row>
+                <entry>FORMURI</entry>
+                <entry>VARCHAR2(256)</entry>
+                <entry>操作表单</entry>
+              </row>
+              <row>
+                <entry>TASKGROUP</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>会签任务组编号</entry>
+              </row>
+              <row>
+                <entry>TASKTYPE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>任务类型</entry>
+              </row>
+              <row>
+                <entry>PROCESSDEFINITION_NAME</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>流程名称</entry>
+              </row>
+              <row>
+                <entry>ISCANCELLED</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>是否取消</entry>
+              </row>
+              <row>
+                <entry>ISSUSPENDED</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>是否暂停</entry>
+              </row>
+              <row>
+                <entry>ISOPEN</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>是否打开</entry>
+              </row>
+              <row>
+                <entry>ISDRAFT</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>是否为草稿</entry>
+              </row>
+              <row>
+                <entry>EXPECTED_EXECUTIONTIME</entry>
+                <entry>NUMBER(12,0)</entry>
+                <entry>预计执行时间</entry>
+              </row>
+              <row>
+                <entry>AGENT</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>外出代理处理者</entry>
+              </row>
+              <row>
+                <entry>ADMIN</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>管理员处理字段</entry>
+              </row>
+              <row>
+                <entry>FORMURIVIEW</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>浏览表单</entry>
+              </row>
+              <row>
+                <entry>CALLACTIVITY_INSTANCE_ID</entry>
+                <entry>VARCHAR2(256)</entry>
+                <entry>主流程启动子流程事用来记录子流程的任务</entry>
+              </row>
+              <row>
+                <entry>COMMAND_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>处理命令编号</entry>
+              </row>
+              <row>
+                <entry>PENDINGTASKID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>转办任务号</entry>
+              </row>
+              <row>
+                <entry>ARCHIVE_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>归档时间</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.run.token">
+          <title>【FIXFLOW_RUN_TOKEN、FIXFLOW_HIS_TOKEN】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>TOKEN_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>令牌编号</entry>
+              </row>
+              <row>
+                <entry>NAME</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>令牌名称</entry>
+              </row>
+              <row>
+                <entry>START_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>开始时间</entry>
+              </row>
+              <row>
+                <entry>END_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>结束时间</entry>
+              </row>
+              <row>
+                <entry>NODEENTER_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>进入节点的时间</entry>
+              </row>
+              <row>
+                <entry>ISABLETOREACTIVATEPARENT</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>能否重新激活父令牌标志</entry>
+              </row>
+              <row>
+                <entry>ISSUSPENDED</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>令牌是否处于暂停状态</entry>
+              </row>
+              <row>
+                <entry>TOKEN_LOCK</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>锁</entry>
+              </row>
+              <row>
+                <entry>NODE_ID</entry>
+                <entry>VARCHAR2(128)</entry>
+                <entry>令牌所在的当前节点编号</entry>
+              </row>
+              <row>
+                <entry>PROCESSINSTANCE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>流程实例编号</entry>
+              </row>
+              <row>
+                <entry>PARENT_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>父级令牌编号</entry>
+              </row>
+              <row>
+                <entry>ISSUBPROCESSROOTTOKEN</entry>
+                <entry>VARCHAR2(20)</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>FREETOKEN</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>是否为自由令牌</entry>
+              </row>
+              <row>
+                <entry>PARENT_FREETOKEN_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>自由令牌的父编号</entry>
+              </row>
+              <row>
+                <entry>ARCHIVE_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>归档时间</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.run.variable">
+          <title>【FIXFLOW_RUN_VARIABLE、FIXFLOW_HIS_VARIABLE】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>PROCESSINSTANCE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>流程实例编号</entry>
+              </row>
+              <row>
+                <entry>VARIABLE_KEY</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>变量KEY</entry>
+              </row>
+              <row>
+                <entry>VARIABLE_VALUE</entry>
+                <entry>BLOB</entry>
+                <entry>变量值(序列号java对象)</entry>
+              </row>
+              <row>
+                <entry>VARIABLE_CLASSNAME</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>变量class类型</entry>
+              </row>
+              <row>
+                <entry>TASKINSTANCE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>任务实例号</entry>
+              </row>
+              <row>
+                <entry>TOKEN_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>零号号</entry>
+              </row>
+              <row>
+                <entry>NODE_ID</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>节点号</entry>
+              </row>
+              <row>
+                <entry>VARIABLE_TYPE</entry>
+                <entry>VARCHAR2(45)</entry>
+                <entry>变量业务类型</entry>
+              </row>
+              <row>
+                <entry>BIZ_DATA</entry>
+                <entry>VARCHAR2(2048)</entry>
+                <entry>变量可查询数据</entry>
+              </row>
+              <row>
+                <entry>ARCHIVE_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>归档时间</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.workdate.des">
+          <title>【FIXFLOW_WORKDATE_DES】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>RULE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>规则编号</entry>
+              </row>
+              <row>
+                <entry>WEEK_NUM</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>星期(星期一、星期二....)</entry>
+              </row>
+              <row>
+                <entry>AM_PM</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>时间段类型(上午、下午、上班夜、下班夜)</entry>
+              </row>
+              <row>
+                <entry>BEGIN_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>开始时间(09:00:00)</entry>
+              </row>
+              <row>
+                <entry>END_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>结束时间(12:00:00)</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.workdate.detail">
+          <title>【FIXFLOW_WORKDATE_DETAIL】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>RULE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>规则编号</entry>
+              </row>
+              <row>
+                <entry>COMMOM_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>日期(YYYY-MM-DD)</entry>
+              </row>
+              <row>
+                <entry>BEGIN_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>开始时间(09:00:00)</entry>
+              </row>
+              <row>
+                <entry>END_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>结束时间(12:00:00)</entry>
+              </row>
+              <row>
+                <entry>AM_PM</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>时间段类型(上午、下午、上班夜、下班夜)</entry>
+              </row>
+              <row>
+                <entry>IS_WORK</entry>
+                <entry>NUMBER(38,0)</entry>
+                <entry>是否工作</entry>
+              </row>
+              <row>
+                <entry>MINUTES</entry>
+                <entry>NUMBER(38,0)</entry>
+                <entry>工作时间长度,单位为分钟(结束时间-开始时间)</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.workdate.rule">
+          <title>【FIXFLOW_WORKDATE_RULE】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>RULE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>规则编号</entry>
+              </row>
+              <row>
+                <entry>RULE_NAME</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>规则名称</entry>
+              </row>
+              <row>
+                <entry>RULE_DESC</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry>规则表述</entry>
+              </row>
+              <row>
+                <entry>CREATE_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>创建日期</entry>
+              </row>
+              <row>
+                <entry>CREATE_USERID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>创建人ID</entry>
+              </row>
+              <row>
+                <entry>CREATE_USERNAME</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>创建人名称</entry>
+              </row>
+              <row>
+                <entry>FIELD1</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>FIELD2</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.workdate.spec">
+          <title>【FIXFLOW_WORKDATE_SPEC】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>RULE_ID</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>规则编号</entry>
+              </row>
+              <row>
+                <entry>SPEC_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>星期(星期一、星期二....)</entry>
+              </row>
+              <row>
+                <entry>BEGIN_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>开始时间(09:00:00)</entry>
+              </row>
+              <row>
+                <entry>END_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>结束时间(12:00:00)</entry>
+              </row>
+              <row>
+                <entry>AM_PM</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>时间段类型(上午、下午、上班夜、下班夜)</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.workdate.weeknum">
+          <title>【FIXFLOW_WORKDATE_WEEKNUM】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>WEEK_NUM</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>BEGIN_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>开始时间(09:00:00)</entry>
+              </row>
+              <row>
+                <entry>END_DATE</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>结束时间(12:00:00)</entry>
+              </row>
+              <row>
+                <entry>AM_PM</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>时间段类型(上午、下午、上班夜、下班夜)</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <table xml:id="dataBase.dataDictionary.fixflow.mail">
+          <title>【FIXFLOW_MAIL】【表】</title> 
+          <tgroup cols='3'>
+            <thead>
+              <row>
+                <entry>字段名</entry>
+                <entry>数据类型</entry>
+                <entry>注释</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>MAIL_ID</entry>
+                <entry>VARCHAR2(128)</entry>
+                <entry>邮件编号</entry>
+              </row>
+              <row>
+                <entry>MAIL_NAME</entry>
+                <entry>VARCHAR2(4000)</entry>
+                <entry>邮件名称</entry>
+              </row>
+              <row>
+                <entry>MAIL_TO</entry>
+                <entry>VARCHAR2(4000)</entry>
+                <entry>收件地址</entry>
+              </row>
+              <row>
+                <entry>MAIL_SUBJECT</entry>
+                <entry>VARCHAR2(4000)</entry>
+                <entry>邮件主题</entry>
+              </row>
+              <row>
+                <entry>MAIL_BODY</entry>
+                <entry>BLOB</entry>
+                <entry>邮件正文</entry>
+              </row>
+              <row>
+                <entry>BIZ_TYPE</entry>
+                <entry>VARCHAR2(128)</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>BIZ_VALUE</entry>
+                <entry>VARCHAR2(512)</entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry>MAIL_STATUS</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>邮件状态(NOSEND,FAILURE,COMPLETE)</entry>
+              </row>
+              <row>
+                <entry>CREATE_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>创建时间</entry>
+              </row>
+              <row>
+                <entry>SEND_TIME</entry>
+                <entry>TIMESTAMP(6)</entry>
+                <entry>发送时间</entry>
+              </row>
+              <row>
+                <entry>MAIL_CC</entry>
+                <entry>VARCHAR2(4000)</entry>
+                <entry>抄送</entry>
+              </row>
+              <row>
+                <entry>CREATE_USER</entry>
+                <entry>VARCHAR2(64)</entry>
+                <entry>创建人</entry>
+              </row>
+              <row>
+                <entry>FAILURE_REASON</entry>
+                <entry>VARCHAR2(4000)</entry>
+                <entry>错误原因</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </para>
+    </section>
+    <section xml:id="dataBase.dataDictionary.center">
+      <title>组织结构表</title>
+      <para>
+      <table xml:id="dataBase.dataDictionary.au.orginfo">
+        <title>【AU_ORGINFO】【组织结构表】</title>
+        <tgroup cols='3'>
+          <thead>
+            <row>
+              <entry>字段名</entry>
+              <entry>数据类型</entry>
+              <entry>注释</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>ORGID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>组织编号</entry>
+            </row>
+            <row>
+              <entry>SUPORGID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>上级组织编号</entry>
+            </row>
+            <row>
+              <entry>ORGNAME</entry>
+              <entry>VARCHAR2(200)</entry>
+              <entry>组织名</entry>
+            </row>
+            <row>
+              <entry>ORGLEVELID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>组织级别</entry>
+            </row>
+            <row>
+              <entry>UPDATE_BY</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>更新人</entry>
+            </row>
+            <row>
+              <entry>UPDATE_DT</entry>
+              <entry>DATE</entry>
+              <entry>更新时间</entry>
+            </row>
+            <row>
+              <entry>CREATE_BY</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>创建人</entry>
+            </row>
+            <row>
+              <entry>UNIT_TYPE</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>CREATE_DT</entry>
+              <entry>DATE</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>ONSTATUS</entry>
+              <entry>NUMBER(12,0)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>SORT_ORDER</entry>
+              <entry>NUMBER(12,0)</entry>
+              <entry>排序</entry>
+            </row>
+            <row>
+              <entry>ORGPATH</entry>
+              <entry>VARCHAR2(800)</entry>
+              <entry></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <table xml:id="dataBase.dataDictionary.au.roleinfo">
+        <title>【AU_ROLEINFO】【角色信息表】</title>
+        <tgroup cols='3'>
+          <thead>
+            <row>
+              <entry>字段名</entry>
+              <entry>数据类型</entry>
+              <entry>注释</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>ROLEID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>角色编号</entry>
+            </row>
+            <row>
+              <entry>NAME</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>角色名称</entry>
+            </row>
+            <row>
+              <entry>BIZTYPE</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>所属业务类别(1营销、2服务、3投顾)</entry>
+            </row>
+            <row>
+              <entry>PRUGROUP</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>权限分组(1功能角色、2数据角色、3赋权角色)</entry>
+            </row>
+            <row>
+              <entry>PLATFORM</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>所属平台</entry>
+            </row>
+            <row>
+              <entry>MEMO</entry>
+              <entry>VARCHAR2(500)</entry>
+              <entry>描述</entry>
+            </row>
+            <row>
+              <entry>UPDATE_BY</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>CREATE_BY</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>CREATE_DT</entry>
+              <entry>DATE</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>UPDATE_DT</entry>
+              <entry>DATE</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>STATUS</entry>
+              <entry>VARCHAR2(10)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>CREATE_ORGID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>LEVELNUM</entry>
+              <entry>NUMBER(6,2)</entry>
+              <entry>角色级别</entry>
+            </row>
+            <row>
+              <entry>ENAME</entry>
+              <entry>VARCHAR2(128)</entry>
+              <entry>角色级别</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <table xml:id="dataBase.dataDictionary.au.userinfo">
+        <title>【AU_USERINFO】【用户信息表】</title>
+        <tgroup cols='3'>
+          <thead>
+            <row>
+              <entry>字段名</entry>
+              <entry>数据类型</entry>
+              <entry>注释</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>USERID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>用户编号</entry>
+            </row>
+            <row>
+              <entry>USERNAME</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>用户姓名</entry>
+            </row>
+            <row>
+              <entry>LOGINID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>登录帐号</entry>
+            </row>
+            <row>
+              <entry>JOBID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>工号</entry>
+            </row>
+            <row>
+              <entry>PASSWORD</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>密码</entry>
+            </row>
+            <row>
+              <entry>CONF_PASSWORD</entry>
+              <entry>VARCHAR2(500)</entry>
+              <entry>用于流程处理 密码确认</entry>
+            </row>
+            <row>
+              <entry>ISADMIN</entry>
+              <entry>NUMBER(38,0)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>EMAIL</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>电子邮件</entry>
+            </row>
+            <row>
+              <entry>TELEPHONE</entry>
+              <entry>VARCHAR2(30)</entry>
+              <entry>电话</entry>
+            </row>
+            <row>
+              <entry>MOBILEPHONE</entry>
+              <entry>VARCHAR2(30)</entry>
+              <entry>移动电话</entry>
+            </row>
+            <row>
+              <entry>FAX</entry>
+              <entry>VARCHAR2(30)</entry>
+              <entry>传真</entry>
+            </row>
+            <row>
+              <entry>TITLEOFPOST</entry>
+              <entry>VARCHAR2(30)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>WORKED_TIME</entry>
+              <entry>DATE</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>ISENABLE</entry>
+              <entry>NUMBER(38,0)</entry>
+              <entry>是否有效</entry>
+            </row>
+            <row>
+              <entry>MEMO</entry>
+              <entry>VARCHAR2(100)</entry>
+              <entry>备注</entry>
+            </row>
+            <row>
+              <entry>CREATE_BY  </entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>创建人</entry>
+            </row>
+            <row>
+              <entry>CREATE_DT  </entry>
+              <entry>DATE</entry>
+              <entry>创建时间</entry>
+            </row>
+            <row>
+              <entry>UPDATE_BY  </entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>更新人</entry>
+            </row>
+            <row>
+              <entry>UPDATE_DT  </entry>
+              <entry>DATE</entry>
+              <entry>更新时间</entry>
+            </row>
+            <row>
+              <entry>SSOID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>单点登录标示号</entry>
+            </row>
+            <row>
+              <entry>POSITION</entry>
+              <entry>VARCHAR2(64)</entry>
+              <entry>创建人</entry>
+            </row>
+            <row>
+              <entry>LOCATION_NAME</entry>
+              <entry>VARCHAR2(64)</entry>
+              <entry>英文名称</entry>
+            </row>
+            <row>
+              <entry>IMG</entry>
+              <entry>VARCHAR2(64)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>SUPERLEADER</entry>
+              <entry>VARCHAR2(64)</entry>
+              <entry></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <table xml:id="dataBase.dataDictionary.fix.group.relation">
+        <title>【FIX_GROUP_RELATION】【表】</title>
+        <tgroup cols='3'>
+          <thead>
+            <row>
+              <entry>字段名</entry>
+              <entry>数据类型</entry>
+              <entry>注释</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>GUID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>唯一编号</entry>
+            </row>
+            <row>
+              <entry>USER_ID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>用户编号</entry>
+            </row>
+            <row>
+              <entry>GROUP_ID</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>组编号</entry>
+            </row>
+            <row>
+              <entry>GROUP_TYPE</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry>组类型</entry>
+            </row>
+            <row>
+              <entry>IS_PRIDUTY</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>IS_DEPUTE</entry>
+              <entry>VARCHAR2(10)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>CREATE_DT</entry>
+              <entry>DATE</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>UPDATE_DT</entry>
+              <entry>DATE</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>CREATE_BY</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>UPDATE_BY</entry>
+              <entry>VARCHAR2(50)</entry>
+              <entry></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+    </section>
+    
+  </section>
+
+  
+</chapter>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flowconnector:FlowConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:flowconnector="http://www.founderfix.com/flowconnector" id="SaveData" name="保存数据" note="保存数据" categoryId="817b5afa-117e-4da4-ac53-b94bdc05eac8" icon="SaveData.png">
+  <input id="inputId0" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <definitionImpl className="SaveData" packageName="com.founder.fix.fixflow.expand.flowconnector.SaveData"/>
+</flowconnector:FlowConnectorDefinition>

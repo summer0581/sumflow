@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN'  
+               '../dtd/docbook.dtd'> 
+               
+<chapter xml:id="fixflowapi">
+  <title>FixFlow API</title>
+  
+  <section xml:id="api.engineServices">
+    <title>Process Engine API and services</title>
+    <para>
+      引擎API是最常用的与Fixflow交互的方式,根据配置文件创建出流程引擎(ProcessEngine),根据流程引擎获取相关的服务对象。
+      ProcessEngine对象是线程安全的,你可以在整个服务器使用它。      
+    </para>
+    <mediaobject><imageobject>
+      <imagedata align="center" contentwidth="600" fileref="images/FixFlowAPI.1.png"/>
+    </imageobject></mediaobject>
+    <para>
+      <programlisting language="java">
+ProcessEngine processEngine=ProcessEngineManagement.getDefaultProcessEngine();
+ModelService modelService = processEngine.getModelService();
+RuntimeService runtimeService = processEngine.getRuntimeService();
+TaskService taskService = processEngine.getTaskService();
+FormService formService = processEngine.getFormService();
+HistoryService historyService = processEngine.getHistoryService();
+IdentityService identityService = processEngine.getIdentityService();
+ScheduleService scheduleService = processEngine.getScheduleService();</programlisting>
+    </para>
+    <para>这些服务的名称都十分直观的。引擎的所有API使用说明请参见fixflow-test测试项目。下面我们只做简单的介绍。</para>
+    <para>用过activiti的都会说,这个API跟activiti的很像,的确我们在FixFlow新版本设计时候参考了activiti的API层,使用过activiti的
+    开发人员可以更加轻松的掌握FixFlow的API,虽然API层非常相似,但是引擎内核的驱动方式和存储方式可以说是完全不一样,关于引擎的原理请参考
+      <link linkend="bpmn.FixFlow.ProcessEngine">FixFlow Engine 运行机制及原理</link>
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>ModelService 获取模型服务</para>
+      </listitem>
+      <listitem>
+        <para>RuntimeService 获取运行时服务</para>
+      </listitem>
+      <listitem>
+        <para>TaskService 获取任务服务</para>
+      </listitem>
+      <listitem>
+        <para>FormService 获取表单服务</para>
+      </listitem>
+      <listitem>
+        <para>HistoryService 获取历史数据服务</para>
+      </listitem>
+      <listitem>
+        <para> IdentityService 获取组织结构服务</para>
+      </listitem>
+      <listitem>
+        <para>ScheduleService 获取定时任务服务</para>
+      </listitem>
+    </itemizedlist>
+    <para>ProcessEngineManagement.getDefaultProcessEngine() 当第一次使用这个方法的时候,将初始化创建一个默认的流程引擎实例,
+      这个实例是在整个服务器范围内有效的,并且是线程安全的,以后再次请求的时间将拿到已经创建好的引擎实例。
+      引擎会根据fixflowconfig.xml配置文件来创建,这个文件默认放在fixflow-expand项目中。</para>
+  </section>
+    
+  <section xml:id="api.connection">
+    <title>数据库连接和线程副本</title>
+    <para>
+      在使用各个Service之前,需要对流程引擎这次操作设置相应的数据库连接、操作人,供流程引擎在这次操作中使用,这些设置
+      都将存放在线程副本中,并不会影响到ProcessEngine这个全局实例。
+    </para>
+    <para>
+      <programlisting language="java"><![CDATA[ProcessEngine processEngine=ProcessEngineManagement.getDefaultProcessEngine();
+ExternalContent externalContent =new ExternalContent();
+externalContent.setAuthenticatedUserId("操作用户编号");
+externalContent.setConnection(数据库连接);
+externalContent.setConnection(连接ID, 数据库连接);
+externalContent.setConnectionManagement("连接管理器编号");
+processEngine.setExternalContent(externalContent);]]>
+      </programlisting>
+      
+    </para>
+    <para>
+      <emphasis role="bold">externalContent对象</emphasis>: 用来存放流程操作中所需要的外部信息。
+    </para>
+    <para>
+      <emphasis role="bold">AuthenticatedUserId</emphasis>: 用来设置流程操作的处理人
+    </para>
+    <para>
+      <emphasis role="bold">Connection</emphasis>: FixFlow引擎支持从外部传递Connection和自己从内部创建Connection两种方式,做为一个可集成的流程引擎,需要考虑到各种技术框架的集成,所以
+      FixFlow引擎本身的数据库管理并不针对任何一种框架。
+    </para>
+    <para>
+      这里我们先介绍第一种也是比较常用的方式,从外部传递数据库连接,一般我们在集成流程引擎的时候,对于流程引擎的操作都是
+      先做自己的表单数据保存,之后在将数据收集好提交给流程引擎,这样就要求操作表单数据保存的Connection和流程引擎操作的Connection
+      必须为一个,这样才能获取到之前操作数据库产生变更的数据,统一控制事务。这个时候就需要把之前用的Connection传入流程引擎。
+      流程引擎本身并不负责去关闭Connection,在流程中任务的代码里也不需要手动的去关闭Connection,在流程操作完毕后,统一由外部来关闭。
+    </para>
+    <para>
+      下面是一个外部传递Connection的例子:
+    </para>
+    <para>
+    <programlisting language="java"><![CDATA[ProcessEngine processEngine=ProcessEngineManagement.getDefaultProcessEngine();
+		
+//获取流程当前配置的数据库信息
+DataBase dataBase=processEngine.getProcessEngineConfiguration().getSelectedDatabase();
+
+Connection connection = null;
+String driver = dataBase.getDriverClassName();
+String url = dataBase.getUrl();
+String user = dataBase.getUsername();
+String password = dataBase.getPassword();
+
+//创建Connection
+try {
+  Class.forName(driver);
+  connection = DriverManager.getConnection(url, user, password);
+  connection.setAutoCommit(false);
+} catch (Exception e) {
+  e.printStackTrace();
+  throw new FixFlowException("数据库链接创建失败!", e);
+}
+
+
+ExternalContent externalContent =new ExternalContent();
+externalContent.setAuthenticatedUserId("操作用户编号");
+externalContent.setConnection("数据库连接");
+processEngine.setExternalContent(externalContent);
+		
+try {
+  //获取Service
+  RuntimeService runtimeService=processEngine.getRuntimeService();
+  
+  //流程操作代码...................
+  
+  //外部提交事务
+  connection.commit();
+} catch (Exception e) {
+  //出现外部控制异常回滚
+  connection.rollback();
+}
+
+finally{
+  //清空引擎线程副本,但是不关闭使用的数据库连接
+  processEngine.contextClose(true, false);
+  //外部来关闭数据库连接
+  connection.close();
+}]]>
+      </programlisting>
+    </para>
+    <para>
+      <emphasis>注意：</emphasis>可以给流程设置多个Connection,一个参数的setConnection方法其实跟setConnection("默认选中数据库ID",Connection)效果是一样的。
+    </para>
+    <para>
+      数据ID请参见 <link linkend="config.dataBaseConfig">数据源配置</link>
+    </para>
+    <para>
+      如何在流程引擎内部获取外部传进来的Connection?
+      <programlisting language="java"><![CDATA[//默认的数据库连接
+Context.getDbConnection();
+//指定ID的数据库连接
+Context.getDbConnection("数据库ID");]]></programlisting>
+    </para>
+    
+    
+  </section>
+  
+  <section xml:id="api.apiDemo">
+    <title>使用Services Api完成一个流程的操作</title>
+   <orderedlist>
+     <listitem>
+       <para>发布流程，对流程定义的操作，所以方法在modelService类中，使用方法如下：</para>
+      <programlisting language="java">
+//获取modelService
+ModelService modelService =  processEngine.getModelService();
+//通过zip文件的path发布流程
+String deploymentId = modelService.deploymentByZip("com/founder/fix/fixflow/test/engine/api/model/Process_TaskServiceTest.zip");
+//验证是否发布成功
+assertNotNull(deploymentId);</programlisting>
+     </listitem>
+     <listitem>
+       <para>启动流程，对于流程实例的操作，所以方法在runtimeService中，这里有多种方法，我们介绍其中一种：</para>
+       <programlisting language="java">
+//创建一个启动命令
+StartProcessInstanceCommand startProcessInstanceCommand = new StartProcessInstanceCommand();
+//设置需要启动的流程的KEY
+startProcessInstanceCommand.setProcessDefinitionKey("Process_TaskServiceTest");
+//设置业务关联键
+startProcessInstanceCommand.setBusinessKey("bk_StartProcessInstanceTest");
+//设置流程的启动人
+startProcessInstanceCommand.setStartAuthor("1200119390");
+//启动流程，返回流程实例
+ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startProcessInstanceCommand);
+//验证流程是否启动成功
+assertNotNull(processInstance);
+       </programlisting>
+     </listitem>
+     <listitem>
+       <para>获取待办任务、点击同意按钮、获取流程实例（流程追踪）等对任务的操作，所以方法再taskService中，使用方法如下：</para>
+       <programlisting language="java">
+// 创建任务查询
+TaskQuery taskQuery = taskService.createTaskQuery();
+// 查找 1200119390 的这个流程实例的当前独占任务
+List&lt;TaskInstance> taskInstances = taskQuery.taskAssignee("1200119390").processInstanceId(processInstanceId).taskNotEnd().list();
+// 获取一条任务
+TaskInstance taskInstance = taskInstances.get(0);
+//验证这个待办是否为空
+assertNotNull(taskInstance);
+String nodeId = taskInstance.getNodeId();
+//验证流程实例是否在第二个节点
+assertEquals(nodeId, "UserTask_2");
+
+//创建通用命令
+ExpandTaskCommand expandTaskCommandGeneral=new ExpandTaskCommand();
+//设置命令为领取任务
+expandTaskCommandGeneral.setCommandType("general");
+//设置命令的ID，需和节点上配置的按钮编号对应，会执行其中脚本
+expandTaskCommandGeneral.setUserCommandId("HandleCommand_2");
+//设置命令的处理任务号
+expandTaskCommandGeneral.setTaskId(taskInstance.getId());
+//点击通用按钮
+taskService.expandTaskComplete(expandTaskCommandGeneral, null);
+
+//创建流程实例查询
+ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
+//获得上面的流程实例
+ProcessInstance process = processInstanceQuery.processInstanceId(processInstanceId).singleResult();
+//验证流程实例已经结束，结束说明通用按钮已经驱动流程离开当前节点。
+assertTrue(process.hasEnded());
+       </programlisting>
+     </listitem>
+   </orderedlist>
+    <para>这里只做了流程简单的发布，启动，同意等简单操作，任务查询或流程实例其他复杂查询参考下一节，更加复杂的操作可以参考fixflow-test项目，或者本文档的其他章节。</para>
+  </section>
+
+
+  <section xml:id="api.query">
+    <title>Query API</title>
+    <para> FixFlow的Query定义了查询的各种接口，通过各种service创建查询。
+      <programlisting language="java">
+ProcessDefinitionQuery processDefinitionQuery=modelService.createProcessDefinitionQuery();
+ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
+TaskQuery taskQuery = taskService.createTaskQuery();
+IdentityLinkQuery identityLinkQuery = taskService.createIdentityLinkQuery();
+      </programlisting>
+    </para>
+    <para>这些是流程引擎最常用的Query</para>
+    <itemizedlist>
+      <listitem>
+        <para>processDefinitionQuery：流程定义的Query对象。</para>
+      </listitem>
+      <listitem>
+        <para>ProcessInstanceQuery：流程实例的Query对象。</para>
+      </listitem>
+      <listitem>
+        <para>TaskQuery：任务实例的Query对象。</para>
+      </listitem>
+      <listitem>
+        <para>IdentityLinkQuery：任务候选人的Query对象。</para>
+      </listitem>
+    </itemizedlist>
+    <para>查询的方法根据表的不同方法名也不同，下面以ProcessInstanceQuery为例简单介绍Query的使用方法。</para>
+    <programlisting language="java">
+//创建流程实例查询
+ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
+//根据key查询实例
+processInstanceQuery.processDefinitionKey("Process_TaskServiceTest");
+//查询发起人id like“1200119390”的流程
+processInstanceQuery.initiatorLike("1200119390");
+//根据开始时间降序查询
+processInstanceQuery.orderByStartTime().desc();
+//上面的查询结果是流程定义为"Process_TaskServiceTest"并且发起人为"1200119390"的所有流程实例
+//获取1-5条结果
+List&lt;String> processInstances = processInstanceQuery.listPage(1, 5);
+//获取第1页结果，每页5条
+processInstances = processInstanceQuery.listPagination(1, 5);
+     
+    </programlisting>
+    <important><para>如果需要再次用到processInstanceQuery对象，则需要重置processInstanceQuery对象，如：processInstanceQuery = runtimeService.createProcessInstanceQuery();，因为Query对象会将上次的查询条件保存。</para></important>
+    <para>这些Query对象包含了流程引擎中最常用的字段，遇到不满足的FixFlow的Query提供了扩展查询方法，使用方法如下：</para>
+    <orderedlist>
+      <listitem>
+        <para>查询字段或者表不满足的时候，可以进行如下扩展</para>
+        <programlisting language="java">//重置流程实例查询
+processInstanceQuery = runtimeService.createProcessInstanceQuery();
+//创建扩展查询
+queryExpandTo = new QueryExpandTo();
+//添加扩展的字段
+queryExpandTo.setFieldSql("fixflow_def_processdefinition.PROCESS_NAME,fixflow_def_processdefinition.RESOURCE_NAME");
+//增加扩展查询的left join语句
+queryExpandTo.setLeftJoinSql("left join fixflow_def_processdefinition on processdefinition_id = fixflow_def_processdefinition.process_id");
+//增加扩展查询
+processInstanceQuery.queryExpandTo(queryExpandTo);
+//查询TaskServiceNewTest经过扩展查询后的结果
+processInstanceQuery.processDefinitionKey("TaskServiceNewTest");
+list = processInstanceQuery.list(); 
+        </programlisting>
+      </listitem>
+      <listitem>
+        <para>查询字段或者表不满足的时候，可以进行如下扩展</para>
+        <programlisting language="java">//重置流程实例查询
+processInstanceQuery = runtimeService.createProcessInstanceQuery();
+//创建扩展查询
+QueryExpandTo queryExpandTo = new QueryExpandTo();
+//常见扩展查询的参数列表
+List&lt;Object> whereSqlObj = new ArrayList&lt;Object>();
+//添加扩展wheresql语句    (本例子扩展方法查询正在运行的流程实例)
+queryExpandTo.setWhereSql("PROCESSINSTANCE_ID  IN (SELECT PROCESSINSTANCE_ID FROM "+VariableObjKey.VariableTableName()+" WHERE VARIABLE_KEY = ? AND BIZ_DATA = ?)");
+//增加扩展wheresql的参数
+whereSqlObj.add("queryVariable");
+whereSqlObj.add("查询变量1");
+queryExpandTo.setWhereSqlObj(whereSqlObj);
+//增加扩展查询
+processInstanceQuery.queryExpandTo(queryExpandTo);
+//查询TaskServiceNewTest经过扩展查询后的结果
+processInstanceQuery.processDefinitionKey("ProcessVariablesTest");
+processInstances = processInstanceQuery.list();    
+        </programlisting>
+      </listitem>
+    </orderedlist>
+  </section>
+
+
+  <section xml:id="api.junit">
+    <title>使用Junit测试类</title>
+    <para>
+      JUNIT测试类是FixFlow项目中的fixflow-test项目，此项目包含了Service和Query接口中的大部分方法，而且还在一步步完善。关于junit测试不做太多描述，
+      下面详细说下关于在FixFlow测试某个功能，代码如下：
+    </para>
+    <programlisting>
+public class ProcessInstanceQueryTest extends AbstractFixFlowTestCase {
+  /**
+  * 测试流程实例查询
+  * @throws InterruptedException 
+  */
+  @Deployment(resources = { "com/founder/fix/fixflow/test/engine/api/task/TaskServiceTest.bpmn"})
+  public void testProcessInstanceQuery() throws InterruptedException{
+    //创建一个通用命令
+    ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+    //设置流程名
+    expandTaskCommand.setProcessDefinitionKey("Process_TaskServiceTest");
+    //设置流程的业务关联键
+    expandTaskCommand.setBusinessKey("BK_testStartProcessInstanceByKey");
+    //命令类型，可以从流程引擎配置中查询   启动并提交为startandsubmit
+    expandTaskCommand.setCommandType("startandsubmit");
+    //设置提交人
+    expandTaskCommand.setInitiator("1200119390");
+    //设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
+    expandTaskCommand.setUserCommandId("HandleCommand_2");
+    //创建流程变量Map
+    Map&lt;String, Object> mapVariables = new HashMap&lt;String, Object>();
+    //设置amount变量的值为300
+    mapVariables.put("amount", 300);
+    expandTaskCommand.setTransientVariables(mapVariables);
+    //执行这个启动并提交的命令，返回启动的流程实例
+    ProcessInstance processInstance = (ProcessInstance)taskService.expandTaskComplete(expandTaskCommand, null);
+    //获取流程实例ID
+    String processInstanceId = processInstance.getId();
+    //验证是否启动成功
+    assertNotNull(processInstanceId);
+  }
+}
+    </programlisting>
+    <para>下面对代码进行讲解</para>
+    <orderedlist>
+      <listitem>
+        <para>public class ProcessInstanceQueryTest extends AbstractFixFlowTestCase  在FixFlow中创建junit测试类都要继承于父类AbstractFixFlowTestCase，父类中进行流程引擎的初始化以及测试完成之后的清理操作。
+          每个方法会执行一次清理操作，保证各个方法之间互不影响。AbstractFixFlowTestCase默认读取fixflowconfig.xml文件中的数据库配置信息。
+        </para>
+      </listitem>
+      <listitem>
+        <para>@Deployment(resources = { "com/founder/fix/fixflow/test/engine/api/task/TaskServiceTest.bpmn"})方法声明上加上这个注解是为了简化发布代码，
+          这样声明的意思是：在此方法运行之前，会先将TaskServiceTest.bpmn这个流程文件发布到数据库，在方法中就可以使用此流程定义。TaskServiceTest.bpmn流程的bpmn文件放在src/resources/com/founder/fix/fixflow/test/engine/api/task/目录下。</para>
+      </listitem>
+      <listitem><para>由于在AbstractFixFlowTestCase父类中已经做好了FixFlow引擎的初始化工作和清理工作，在方法声明上使用了注解发布流程定义，所以我们不用
+      关心流程发布等代码，也不用担心测试类产生的垃圾数据问题。</para></listitem>
+    </orderedlist>
+    
+  </section>
+</chapter>

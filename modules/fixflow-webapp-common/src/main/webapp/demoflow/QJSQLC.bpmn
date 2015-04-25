@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:fixflow="http://www.founderfix.com/fixflow" id="Definitions_1" targetNamespace="http://www.founderfix.com">
+  <bpmn2:process id="QJSQLC" fixflow:verification="true" fixflow:dbid="QJSQLC:2:2552f51a-ce99-4e8f-a152-627e065d9401" fixflow:category="人力资源" name="请假申请流程">
+    <bpmn2:extensionElements>
+      <fixflow:taskSubject id="TaskSubject_1">
+        <fixflow:expression xsi:type="fixflow:Expression" id="Expression_1" name="&quot;请假申请流程&quot;">&quot;请假申请流程&quot;</fixflow:expression>
+      </fixflow:taskSubject>
+      <fixflow:formUri>
+        <fixflow:expression xsi:type="fixflow:Expression" id="Expression_2" name="&quot;DemoServlet?action=doTask&quot;">&quot;DemoServlet?action=doTask&quot;</fixflow:expression>
+      </fixflow:formUri>
+    </bpmn2:extensionElements>
+    <bpmn2:laneSet id="LaneSet_1" name="Lane Set 1">
+      <bpmn2:lane id="Lane_1" name="请假申请流程">
+        <bpmn2:childLaneSet xsi:type="bpmn2:tLaneSet" id="LaneSet_2">
+          <bpmn2:lane id="Lane_3" name="填写申请">
+            <bpmn2:childLaneSet xsi:type="bpmn2:tLaneSet" id="LaneSet_3">
+              <bpmn2:lane id="Lane_10" name="">
+                <bpmn2:flowNodeRef>ExclusiveGateway_1</bpmn2:flowNodeRef>
+                <bpmn2:flowNodeRef>StartEvent_1</bpmn2:flowNodeRef>
+                <bpmn2:flowNodeRef>UserTask_1</bpmn2:flowNodeRef>
+              </bpmn2:lane>
+            </bpmn2:childLaneSet>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_4" name="部门主管审批">
+            <bpmn2:childLaneSet xsi:type="bpmn2:tLaneSet" id="LaneSet_4">
+              <bpmn2:lane id="Lane_11" name="">
+                <bpmn2:flowNodeRef>UserTask_2</bpmn2:flowNodeRef>
+                <bpmn2:flowNodeRef>ExclusiveGateway_2</bpmn2:flowNodeRef>
+              </bpmn2:lane>
+            </bpmn2:childLaneSet>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_5" name="主管领导审批">
+            <bpmn2:childLaneSet xsi:type="bpmn2:tLaneSet" id="LaneSet_5">
+              <bpmn2:lane id="Lane_12" name="">
+                <bpmn2:flowNodeRef>UserTask_3</bpmn2:flowNodeRef>
+                <bpmn2:flowNodeRef>ExclusiveGateway_3</bpmn2:flowNodeRef>
+              </bpmn2:lane>
+            </bpmn2:childLaneSet>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_7" name="通知人力资源">
+            <bpmn2:childLaneSet xsi:type="bpmn2:tLaneSet" id="LaneSet_6">
+              <bpmn2:lane id="Lane_13" name="">
+                <bpmn2:flowNodeRef>UserTask_4</bpmn2:flowNodeRef>
+              </bpmn2:lane>
+            </bpmn2:childLaneSet>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_8" name="销假">
+            <bpmn2:childLaneSet xsi:type="bpmn2:tLaneSet" id="LaneSet_7">
+              <bpmn2:lane id="Lane_14" name="">
+                <bpmn2:flowNodeRef>UserTask_5</bpmn2:flowNodeRef>
+              </bpmn2:lane>
+            </bpmn2:childLaneSet>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_9" name="人力资源备案">
+            <bpmn2:childLaneSet xsi:type="bpmn2:tLaneSet" id="LaneSet_8">
+              <bpmn2:lane id="Lane_15" name="">
+                <bpmn2:flowNodeRef>UserTask_6</bpmn2:flowNodeRef>
+                <bpmn2:flowNodeRef>EndEvent_1</bpmn2:flowNodeRef>
+              </bpmn2:lane>
+            </bpmn2:childLaneSet>
+          </bpmn2:lane>
+        </bpmn2:childLaneSet>
+      </bpmn2:lane>
+    </bpmn2:laneSet>
+    <bpmn2:userTask id="UserTask_2" fixflow:taskType="FIXFLOWTASK" name="2.部门主管审批">
+      <bpmn2:extensionElements>
+        <fixflow:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
+        <fixflow:assignPolicyType id="potentialOwner_One"/>
+        <fixflow:taskCommand id="HandleCommand_2" name="同意" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false">
+          <fixflow:expression xsi:type="fixflow:Expression" id="Expression_7" name="y=1">y=1</fixflow:expression>
+        </fixflow:taskCommand>
+        <fixflow:taskCommand id="HandleCommand_4" name="不同意，返回修改" commandType="rollBackTaskPreviousStep" isVerification="true" isSaveData="true" isSimulationRun="false"/>
+        <fixflow:skipStrategy/>
+        <fixflow:taskCommand id="HandleCommand_5" name="终止申请" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false">
+          <fixflow:expression xsi:type="fixflow:Expression" id="Expression_9" name="y=2">y=2</fixflow:expression>
+        </fixflow:taskCommand>
+        <fixflow:expectedExecutionTime/>
+        <fixflow:taskCommand id="HandleCommand_3" name="接收任务" commandType="claim" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_15" fixflow:resourceType="user" fixflow:includeExclusion="INCLUDE" fixflow:isContainsSub="false" name="部门主管">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_15">
+          <bpmn2:formalExpression id="FormalExpression_9" fixflow:name="&quot;1&quot;">&quot;1&quot;</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="UserTask_2" targetRef="ExclusiveGateway_2"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="">
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_8" name="提交主管审批" sourceRef="ExclusiveGateway_1" targetRef="UserTask_2">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="y==1">y==1</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:userTask id="UserTask_3" fixflow:taskType="FIXFLOWTASK" name="3.主管领导审批">
+      <bpmn2:extensionElements>
+        <fixflow:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
+        <fixflow:assignPolicyType id="potentialOwner"/>
+        <fixflow:taskCommand id="HandleCommand_2" name="同意" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false">
+          <fixflow:expression xsi:type="fixflow:Expression" id="Expression_10" name="y=1">y=1</fixflow:expression>
+        </fixflow:taskCommand>
+        <fixflow:taskCommand id="HandleCommand_4" name="不同意" commandType="rollBackTaskPreviousStep" isVerification="true" isSaveData="true" isSimulationRun="false"/>
+        <fixflow:skipStrategy/>
+        <fixflow:taskCommand id="HandleCommand_5" name="终止申请" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false">
+          <fixflow:expression xsi:type="fixflow:Expression" id="Expression_12" name="y=2">y=2</fixflow:expression>
+        </fixflow:taskCommand>
+        <fixflow:expectedExecutionTime/>
+        <fixflow:taskCommand id="HandleCommand_3" name="接收任务" commandType="claim" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_12" fixflow:resourceType="user" fixflow:includeExclusion="INCLUDE" fixflow:isContainsSub="false" name="主管领导">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_12">
+          <bpmn2:formalExpression id="FormalExpression_6" fixflow:name="&quot;1&quot;">&quot;1&quot;</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="UserTask_3" targetRef="ExclusiveGateway_3"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_2" name="">
+      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="ExclusiveGateway_2" targetRef="UserTask_3">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="y==1_1">y==1</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:userTask id="UserTask_4" fixflow:taskType="FIXFLOWTASK" name="4.通知人力资源">
+      <bpmn2:extensionElements>
+        <fixflow:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
+        <fixflow:assignPolicyType id="potentialOwner"/>
+        <fixflow:skipStrategy/>
+        <fixflow:expectedExecutionTime/>
+        <fixflow:taskCommand id="HandleCommand_2" name="同意" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false"/>
+        <fixflow:taskCommand id="HandleCommand_3" name="接收任务" commandType="claim" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_11" fixflow:resourceType="user" fixflow:includeExclusion="INCLUDE" fixflow:isContainsSub="false" name="人力资源">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_11">
+          <bpmn2:formalExpression id="FormalExpression_5" fixflow:name="&quot;1&quot;">&quot;1&quot;</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="UserTask_4" targetRef="UserTask_5"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_3" name="">
+      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="ExclusiveGateway_3" targetRef="UserTask_4">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="y==1_2">y==1</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:userTask id="UserTask_5" fixflow:taskType="FIXFLOWTASK" name="5.销假">
+      <bpmn2:extensionElements>
+        <fixflow:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
+        <fixflow:assignPolicyType id="potentialOwner"/>
+        <fixflow:skipStrategy/>
+        <fixflow:expectedExecutionTime/>
+        <fixflow:taskCommand id="HandleCommand_2" name="同意" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false"/>
+        <fixflow:taskCommand id="HandleCommand_3" name="接收任务" commandType="claim" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_10" fixflow:resourceType="user" fixflow:includeExclusion="INCLUDE" fixflow:isContainsSub="false" name="人力资源">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_10">
+          <bpmn2:formalExpression id="FormalExpression_4" fixflow:name="&quot;1&quot;">&quot;1&quot;</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="UserTask_5" targetRef="UserTask_6"/>
+    <bpmn2:userTask id="UserTask_6" fixflow:taskType="FIXFLOWTASK" name="6.人力资源备案">
+      <bpmn2:extensionElements>
+        <fixflow:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
+        <fixflow:assignPolicyType id="potentialOwner"/>
+        <fixflow:skipStrategy/>
+        <fixflow:expectedExecutionTime/>
+        <fixflow:taskCommand id="HandleCommand_2" name="同意" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false"/>
+        <fixflow:taskCommand id="HandleCommand_3" name="接收任务" commandType="claim" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_14" fixflow:resourceType="user" fixflow:includeExclusion="INCLUDE" fixflow:isContainsSub="false" name="人力资源">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_14">
+          <bpmn2:formalExpression id="FormalExpression_8" fixflow:name="&quot;1&quot;">&quot;1&quot;</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="UserTask_6" targetRef="EndEvent_1"/>
+    <bpmn2:startEvent id="StartEvent_1" name="开始">
+      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="StartEvent_1" targetRef="UserTask_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" name="作废" sourceRef="ExclusiveGateway_3" targetRef="EndEvent_1">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="y==2">y==2</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" name="作废" sourceRef="ExclusiveGateway_2" targetRef="EndEvent_1">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="y==2_1">y==2</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_14" name="提交主管领导审批" sourceRef="ExclusiveGateway_1" targetRef="UserTask_3">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="y==2_2">y==2</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:endEvent id="EndEvent_1" name="结束">
+      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:userTask id="UserTask_1" fixflow:taskType="FIXFLOWTASK" name="1.填写申请">
+      <bpmn2:extensionElements>
+        <fixflow:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
+        <fixflow:assignPolicyType id="potentialOwner_One"/>
+        <fixflow:taskCommand id="HandleCommand_2" name="启动并提交部门主管" commandType="startandsubmit" isVerification="true" isSaveData="true" isSimulationRun="false">
+          <fixflow:expression xsi:type="fixflow:Expression" id="Expression_3" name="y=1">y=1</fixflow:expression>
+        </fixflow:taskCommand>
+        <fixflow:skipStrategy/>
+        <fixflow:taskCommand id="HandleCommand_4" name="提交部门主管" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false">
+          <fixflow:expression xsi:type="fixflow:Expression" id="Expression_4" name="y=1">y=1</fixflow:expression>
+        </fixflow:taskCommand>
+        <fixflow:taskCommand id="HandleCommand_6" name="启动并提交主管领导" commandType="startandsubmit" isVerification="true" isSaveData="true" isSimulationRun="false">
+          <fixflow:expression xsi:type="fixflow:Expression" name="y=2">y=2</fixflow:expression>
+        </fixflow:taskCommand>
+        <fixflow:taskCommand id="HandleCommand_5" name="提交主管领导" commandType="submit" isVerification="true" isSaveData="true" isSimulationRun="false">
+          <fixflow:expression xsi:type="fixflow:Expression" id="Expression_5" name="y=2">y=2</fixflow:expression>
+        </fixflow:taskCommand>
+        <fixflow:expectedExecutionTime/>
+        <fixflow:taskCommand id="HandleCommand_3" name="保存草稿" commandType="saveTaskDraft" isVerification="true" isSaveData="true" isSimulationRun="false"/>
+        <fixflow:formUri>
+          <fixflow:expression xsi:type="fixflow:Expression" id="Expression_3" name="&quot;DemoServlet?action=startOneTask&quot;">&quot;DemoServlet?action=startOneTask&quot;</fixflow:expression>
+        </fixflow:formUri>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_1" fixflow:resourceType="user" fixflow:includeExclusion="INCLUDE" fixflow:isContainsSub="false" name="所有人">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_1">
+          <bpmn2:formalExpression id="所有人">&quot;fixflow_allusers&quot;</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="UserTask_1" targetRef="ExclusiveGateway_1"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default 流程定义">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="QJSQLC">
+      <bpmndi:BPMNShape id="BPMNShape_Lane_1" bpmnElement="Lane_1" isHorizontal="true">
+        <dc:Bounds height="595.0" width="1391.0" x="0.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_3" bpmnElement="Lane_3" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1361.0" x="30.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_4" bpmnElement="Lane_4" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1361.0" x="30.0" y="99.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_5" bpmnElement="Lane_5" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1361.0" x="30.0" y="198.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_7" bpmnElement="Lane_7" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1361.0" x="30.0" y="297.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_8" bpmnElement="Lane_8" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1361.0" x="30.0" y="396.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_9" bpmnElement="Lane_9" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1361.0" x="30.0" y="495.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_10" bpmnElement="Lane_10" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1331.0" x="60.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_11" bpmnElement="Lane_11" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1331.0" x="60.0" y="99.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_12" bpmnElement="Lane_12" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1331.0" x="60.0" y="198.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_13" bpmnElement="Lane_13" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1331.0" x="60.0" y="297.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_14" bpmnElement="Lane_14" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1331.0" x="60.0" y="396.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_15" bpmnElement="Lane_15" isHorizontal="true">
+        <dc:Bounds height="100.0" width="1331.0" x="60.0" y="495.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1">
+        <dc:Bounds height="36.0" width="36.0" x="280.0" y="200.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="120.0" y="22.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="1060.0" y="528.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="480.0" y="15.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
+        <dc:Bounds height="50.0" width="110.0" x="450.0" y="120.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_2" bpmnElement="ExclusiveGateway_2" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="660.0" y="120.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_3" bpmnElement="UserTask_3">
+        <dc:Bounds height="50.0" width="110.0" x="630.0" y="224.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_3" bpmnElement="ExclusiveGateway_3" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="840.0" y="224.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_4" bpmnElement="UserTask_4">
+        <dc:Bounds height="50.0" width="110.0" x="810.0" y="323.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_5" bpmnElement="UserTask_5">
+        <dc:Bounds height="50.0" width="110.0" x="810.0" y="422.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_6" bpmnElement="UserTask_6">
+        <dc:Bounds height="50.0" width="110.0" x="810.0" y="521.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_1" bpmnElement="UserTask_1">
+        <dc:Bounds height="50.0" width="110.0" x="240.0" y="15.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_UserTask_6" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="920.0" y="546.0"/>
+        <di:waypoint xsi:type="dc:Point" x="983.0" y="546.0"/>
+        <di:waypoint xsi:type="dc:Point" x="983.0" y="546.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1060.0" y="546.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_UserTask_5" targetElement="BPMNShape_UserTask_6">
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="472.0"/>
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="494.0"/>
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="494.0"/>
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="521.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_UserTask_4" targetElement="BPMNShape_UserTask_5">
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="373.0"/>
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="395.0"/>
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="395.0"/>
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="422.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_UserTask_4">
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="275.0"/>
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="296.0"/>
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="296.0"/>
+        <di:waypoint xsi:type="dc:Point" x="865.0" y="323.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_UserTask_3" targetElement="BPMNShape_ExclusiveGateway_3">
+        <di:waypoint xsi:type="dc:Point" x="740.0" y="249.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="249.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="249.0"/>
+        <di:waypoint xsi:type="dc:Point" x="840.0" y="249.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_UserTask_3">
+        <di:waypoint xsi:type="dc:Point" x="685.0" y="171.0"/>
+        <di:waypoint xsi:type="dc:Point" x="685.0" y="194.0"/>
+        <di:waypoint xsi:type="dc:Point" x="685.0" y="194.0"/>
+        <di:waypoint xsi:type="dc:Point" x="685.0" y="224.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_ExclusiveGateway_2">
+        <di:waypoint xsi:type="dc:Point" x="560.0" y="145.0"/>
+        <di:waypoint xsi:type="dc:Point" x="605.0" y="145.0"/>
+        <di:waypoint xsi:type="dc:Point" x="605.0" y="145.0"/>
+        <di:waypoint xsi:type="dc:Point" x="660.0" y="145.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_UserTask_2">
+        <di:waypoint xsi:type="dc:Point" x="505.0" y="66.0"/>
+        <di:waypoint xsi:type="dc:Point" x="505.0" y="90.0"/>
+        <di:waypoint xsi:type="dc:Point" x="505.0" y="90.0"/>
+        <di:waypoint xsi:type="dc:Point" x="505.0" y="120.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_UserTask_1" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint xsi:type="dc:Point" x="350.0" y="40.0"/>
+        <di:waypoint xsi:type="dc:Point" x="408.0" y="40.0"/>
+        <di:waypoint xsi:type="dc:Point" x="408.0" y="40.0"/>
+        <di:waypoint xsi:type="dc:Point" x="480.0" y="40.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_StartEvent_1" targetElement="BPMNShape_UserTask_1">
+        <di:waypoint xsi:type="dc:Point" x="156.0" y="40.0"/>
+        <di:waypoint xsi:type="dc:Point" x="193.0" y="40.0"/>
+        <di:waypoint xsi:type="dc:Point" x="193.0" y="40.0"/>
+        <di:waypoint xsi:type="dc:Point" x="240.0" y="40.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="891.0" y="249.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1078.0" y="249.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1078.0" y="528.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="711.0" y="145.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1078.0" y="145.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1078.0" y="528.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_14" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_UserTask_3">
+        <di:waypoint xsi:type="dc:Point" x="531.0" y="40.0"/>
+        <di:waypoint xsi:type="dc:Point" x="575.0" y="40.0"/>
+        <di:waypoint xsi:type="dc:Point" x="575.0" y="249.0"/>
+        <di:waypoint xsi:type="dc:Point" x="630.0" y="249.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
