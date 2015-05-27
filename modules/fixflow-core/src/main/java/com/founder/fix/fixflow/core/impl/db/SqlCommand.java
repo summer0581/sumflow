@@ -260,7 +260,9 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				pstmt.close();
+				if(pstmt!=null){
+					pstmt.close();
+				}
 				if(rs != null){
 					rs.close();
 				}
