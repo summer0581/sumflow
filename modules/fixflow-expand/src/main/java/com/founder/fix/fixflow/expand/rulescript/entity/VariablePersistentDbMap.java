@@ -39,6 +39,7 @@ public class VariablePersistentDbMap implements BusinessRulesScript {
 		String variableType = dataVariable.getVariableType();
 		
 		String variableClassName = null;
+		//问题代码  变量类别没有获取设置好的类别，而是根据默认值转换出来的类别
 		if (variableValue != null) {
 			variableClassName = variableValue.getClass().getCanonicalName();
 		}

@@ -75,7 +75,7 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 			startProcessInstanceCommand.setBusinessKey(businessKey);
 			startProcessInstanceCommand.setStartAuthor(initiator);
 			startProcessInstanceCommand.setTransientVariables(transientVariables);
-			// startProcessInstanceCommand.setVariables(Variables);
+			startProcessInstanceCommand.setVariables(variables);
 			ProcessInstance processInstanceQueryTo = runtimeService
 					.noneStartProcessInstance(startProcessInstanceCommand);
 
