@@ -33,16 +33,22 @@ import java.util.Map;
 import java.util.Set;
 
 import com.founder.fix.fixflow.core.exception.FixFlowException;
+import com.founder.fix.fixflow.core.impl.Context;
 import com.founder.fix.fixflow.core.impl.log.LogFactory;
 
 public class SqlCommand {
 	
-	 private static com.founder.fix.fixflow.core.impl.log.DebugLog debugLog = LogFactory.getDebugLog(SqlCommand.class);
+	private static com.founder.fix.fixflow.core.impl.log.DebugLog debugLog = LogFactory.getDebugLog(SqlCommand.class);
 
 	Connection conn;
 
 	public SqlCommand(Connection conn) {
-		this.conn = conn;
+		if(conn==null){
+			System.out.println("==============================出现BUG，连接没有获取到！！！=========================");
+			conn = Context.getDbConnection();
+		}else{
+			this.conn = conn;
+		}
 	}
 
 	/**
